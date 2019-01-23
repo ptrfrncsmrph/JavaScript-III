@@ -55,11 +55,14 @@ Function.prototype.map = function(fn) {
 }
 
 // code example for Explicit Binding
-const saySomething = person => fn => {
-  return person.greet.map(fn).bind(person)
+const saySomething = person => {
+  return person.greet.bind(person)
 }
 
 const boundSaySomething = saySomething(jan)
+const boundScreamSomething = boundSaySomething.map(
+  str => str.toUpperCase() + "!!!"
+)
 
-console.log(boundSaySomething(x => x.toUpperCase() + "!!!")())
+console.log(boundScreamSomething())
 // Logs "HI, MY NAME IS JAN!!!"
