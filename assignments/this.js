@@ -37,21 +37,23 @@ function Person(props) {
   Object.entries(props).forEach(([k, v]) => {
     this[k] = v
   })
-  this.greet = function() {
-    return `Hi, my name is ${this.name}`
+  this.greet = function(...preambles) {
+    return `${preambles.join(" ")}, my name is ${this.name}`
   }
 }
 const jan = new Person({ name: "Jan" })
-console.log(jan.greet())
+console.log(jan.greet("Hi"))
 // Logs "Hi, my name is Jan" to the console
 
 // Principle 4
 
 // Fiendish
+Function.prototype.contramap = function(fn) {
+  return (...args) => this(...fn(args))
+}
+
 Function.prototype.map = function(fn) {
-  return (...args) => {
-    return fn(this(...args))
-  }
+  return (...args) => fn(this(...args))
 }
 
 // code example for Explicit Binding
@@ -60,9 +62,9 @@ const saySomething = person => {
 }
 
 const boundSaySomething = saySomething(jan)
-const boundScreamSomething = boundSaySomething.map(
-  str => str.toUpperCase() + "!!!"
-)
+const boundScreamSomething = boundSaySomething
+  .contramap(xs => xs.map(_ => "hmmm...what?"))
+  .map(str => str.toUpperCase() + "!!!")
 
-console.log(boundScreamSomething())
+console.log(boundScreamSomething("Hello", "again"))
 // Logs "HI, MY NAME IS JAN!!!"

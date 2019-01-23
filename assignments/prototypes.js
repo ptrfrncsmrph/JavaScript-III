@@ -126,33 +126,77 @@ const archer = new Humanoid({
 // For testing
 const assert = require("assert")
 
-const cases = [
-  [mage.createdAt, "Today's date"],
-  [archer.dimensions, "{ length: 1, width: 2, height: 4 }"],
-  [swordsman.healthPoints, "15"],
-  [mage.name, "Bruce"],
-  [swordsman.team, "The Round Table"],
-  [mage.weapons, "Staff of Shamalama"],
-  [archer.language, "Elvish"],
-  [archer.greet(), "Lilith offers a greeting in Elvish."],
-  [mage.takeDamage(), "Bruce took damage."],
-  [swordsman.destroy(), "Sir Mustachio was removed from the game."]
-]
+// const cases = [
+//   [mage.createdAt, "Today's date"],
+//   [archer.dimensions, "{ length: 1, width: 2, height: 4 }"],
+//   [swordsman.healthPoints, "15"],
+//   [mage.name, "Bruce"],
+//   [swordsman.team, "The Round Table"],
+//   [mage.weapons, "Staff of Shamalama"],
+//   [archer.language, "Elvish"],
+//   [archer.greet(), "Lilith offers a greeting in Elvish."],
+//   [mage.takeDamage(), "Bruce took damage."],
+//   [swordsman.destroy(), "Sir Mustachio was removed from the game."]
+// ]
 
-// mage.takeDamage //?
+// // mage.takeDamage //?
 
-const test = cases => {
-  cases.forEach(c => {
-    const [input, expect] = c.map(JSON.stringify)
-    console.log({ input, expect })
-    // assert(input === expect, `Expected: ${expect}, Received: ${input}`)
-  })
-  console.log("All tests passing!")
-}
+// const test = cases => {
+//   cases.forEach(c => {
+//     const [input, expect] = c.map(JSON.stringify)
+//     console.log({ input, expect })
+//     // assert(input === expect, `Expected: ${expect}, Received: ${input}`)
+//   })
+//   console.log("All tests passing!")
+// }
 
-test(cases)
+// test(cases)
 
 // Stretch task:
 // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.
 // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
 // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+function Villain(props) {
+  Humanoid.call(this, props)
+}
+Villain.prototype.attack = function(power) {
+  return humanoid => {
+    if (humanoid.healthPoints > power) {
+      humanoid.healthPoints -= power
+    } else {
+      humanoid.healthPoints = 0
+      console.log(humanoid.destroy())
+    }
+  }
+}
+
+function Hero(props) {
+  Humanoid.call(this, props)
+}
+Hero.prototype.attack = function(power) {
+  return humanoid => {
+    if (humanoid.healthPoints > power) {
+      humanoid.healthPoints -= power
+    } else {
+      humanoid.healthPoints = 0
+      console.log(humanoid.destroy())
+    }
+  }
+}
+
+const villy = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2,
+    width: 2,
+    height: 2
+  },
+  healthPoints: 15,
+  name: "Sir Mustachio",
+  team: "The Round Table",
+  weapons: ["Giant Sword", "Shield"],
+  language: "Common Tongue"
+})
+const villyAttack = villy.attack(20)
+villyAttack(archer)
